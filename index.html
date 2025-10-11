@@ -102,7 +102,7 @@
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }).addTo(map);
 
-        // Daftar lokasi CCTV statis
+        // Daftar lokasi CCTV statis yang TELAH DIPERBARUI
         const cctvList = [
             { name: "Tugu Adipura", lat: -5.422321456201332, lng: 105.25823858180057, url: "https://stream.lihatcctv.com/stream/01982b1d-faf1-72f7-94e0-423ffc069e31" },
             { name: "Tugu Juang", lat: -5.40905650196051, lng: 105.25799247669252, url: "https://stream.lihatcctv.com/stream/0196eb9d-2e1a-72cb-babc-0a2c2d573152" },
@@ -113,7 +113,15 @@
             { name: "PKOR Way Halim", lat: -5.378124148833187, lng: 105.27850950455019, url: "https://stream.lihatcctv.com/stream/0196ec00-56c8-72fe-914b-706dca06c154" },
             { name: "Jl. Wolter M (Gubernuran)", lat: -5.439718796445849, lng: 105.25837656858215, url: "https://stream.lihatcctv.com/stream/0196ae7b-0d1e-7197-813d-1deedb6cf843" },
             { name: "Mall Boemi Kedaton (MBK)", lat: -5.38237150577507, lng: 105.25863008300006, url: "https://stream.lihatcctv.com/stream/0196ec03-7f7e-71b5-85d6-9aba0f9a00c0" },
-            { name: "Simpang Pasar Tugu", lat: -5.410006202351245, lng: 105.26772957582837, url: "https://stream.lihatcctv.com/stream/0196ec06-790d-7159-a125-d4b14ddd7d90" }
+            { name: "Simpang Pasar Tugu", lat: -5.410006202351245, lng: 105.26772957582837, url: "https://stream.lihatcctv.com/stream/0196ec06-790d-7159-a125-d4b14ddd7d90" },
+            { name: "Jl. Antasari Simpang Moro", lat: -5.4033999116170195, lng: 105.28095936113165, url: "https://stream.lihatcctv.com/stream/0196ec07-b622-7190-b55a-8e4a1cfc6453" },
+            { name: "JL. Gajah Mada", lat: -5.414026696344876, lng: 105.2672573754387, url: "https://stream.lihatcctv.com/stream/0196ec08-5cdd-7182-a34d-cad58f73db51" },
+            { name: "Simpang Lungsir (Masjid Al-Furqon)", lat: -5.429023652395819, lng: 105.26164229518189, url: "https://stream.lihatcctv.com/stream/0196ec09-42e7-732f-95dd-78190e7ce338" },
+            { name: "Raden Intan - Pangkal Pinang", lat: -5.411633376702506, lng: 105.25834782355633, url: "https://stream.lihatcctv.com/stream/0196f291-10b1-7098-86d0-ad97610abce1" },
+            { name: "Simpang Gereja HKBP", lat: -5.426029649251198, lng: 105.25892771653122, url: "https://stream.lihatcctv.com/stream/0196f293-008f-7354-b039-e3635909cf2c" },
+            { name: "Simpang Tugu Bambu Jl. G. Mada (BPK Penabur)", lat: -5.4186051014701775, lng: 105.26945935306682, url: "https://stream.lihatcctv.com/stream/0196f293-ca93-72b5-8b55-239d6272cb54" },
+            { name: "Jl. Jend. Sudirman - Jl. M. Yamin", lat: -5.422715597178355, lng: 105.26657059237893, url: "https://stream.lihatcctv.com/stream/0196f294-65a9-70b5-b40f-e0210ce08c15" },
+            { name: "Simpang MH Thamrin - Monginsidi", lat: -5.424402196113531, lng: 105.25151654300795, url: "https://stream.lihatcctv.com/stream/0196f295-1106-7032-8285-d083018cc3c3" }
         ];
 
         // Ambil elemen-elemen DOM
@@ -161,10 +169,9 @@
         // Event listener untuk tombol Tutup
         closeBtn.onclick = closeVideoPanel;
 
-        // **FITUR BARU:** Tutup panel jika klik di luar video.
+        // **FITUR:** Tutup panel jika klik di luar video.
         videoPanelWrapper.onclick = (event) => {
             // Cek apakah target klik adalah elemen wrapper itu sendiri
-            // Ini akan menutup panel hanya jika user klik di area gelap di luar video
             if (event.target === videoPanelWrapper) {
                 closeVideoPanel();
             }
