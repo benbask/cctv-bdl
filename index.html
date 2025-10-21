@@ -27,9 +27,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7); /* Latar belakang yang lebih gelap untuk menekankan modal */
+            background: rgba(0, 0, 0, 0.7); 
             display: none; /* Awalnya tersembunyi */
-            z-index: 999; /* Di bawah tombol tutup, tapi di atas peta */
+            z-index: 999; 
         }
         
         /* Panel video itu sendiri, diletakkan di tengah wrapper */
@@ -43,7 +43,7 @@
             border-radius: 12px;
             width: 95%;
             max-width: 960px;
-            z-index: 1000; /* Pastikan di atas wrapper */
+            z-index: 1000; 
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
 
@@ -75,7 +75,7 @@
             padding: 6px 10px;
             cursor: pointer;
             font-size: 1rem;
-            z-index: 1001; /* Pastikan tombol di atas semuanya */
+            z-index: 1001; 
         }
 
         #closeBtn:hover {
@@ -102,7 +102,7 @@
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }).addTo(map);
 
-        // Daftar lokasi CCTV statis yang TELAH DIPERBARUI
+        // Daftar lokasi CCTV statis yang TELAH DIPERBARUI dengan 50 lokasi yang memiliki koordinat
         const cctvList = [
             { name: "Tugu Adipura", lat: -5.422321456201332, lng: 105.25823858180057, url: "https://stream.lihatcctv.com/stream/01982b1d-faf1-72f7-94e0-423ffc069e31" },
             { name: "Tugu Juang", lat: -5.40905650196051, lng: 105.25799247669252, url: "https://stream.lihatcctv.com/stream/0196eb9d-2e1a-72cb-babc-0a2c2d573152" },
@@ -121,7 +121,42 @@
             { name: "Simpang Gereja HKBP", lat: -5.426029649251198, lng: 105.25892771653122, url: "https://stream.lihatcctv.com/stream/0196f293-008f-7354-b039-e3635909cf2c" },
             { name: "Simpang Tugu Bambu Jl. G. Mada (BPK Penabur)", lat: -5.4186051014701775, lng: 105.26945935306682, url: "https://stream.lihatcctv.com/stream/0196f293-ca93-72b5-8b55-239d6272cb54" },
             { name: "Jl. Jend. Sudirman - Jl. M. Yamin", lat: -5.422715597178355, lng: 105.26657059237893, url: "https://stream.lihatcctv.com/stream/0196f294-65a9-70b5-b40f-e0210ce08c15" },
-            { name: "Simpang MH Thamrin - Monginsidi", lat: -5.424402196113531, lng: 105.25151654300795, url: "https://stream.lihatcctv.com/stream/0196f295-1106-7032-8285-d083018cc3c3" }
+            { name: "Simpang MH Thamrin - Monginsidi", lat: -5.424402196113531, lng: 105.25151654300795, url: "https://stream.lihatcctv.com/stream/0196f295-1106-7032-8285-d083018cc3c3" },
+            { name: "Fly Over Kemiling", lat: -5.391487929610052, lng: 105.21586273688912, url: "https://stream.lihatcctv.com/stream/0196f295-b473-71ea-ba3c-c5965395fd9c" },
+            { name: "Pintu Masuk Terminal Rajabasa", lat: -5.368346847827927, lng: 105.23612718719572, url: "https://stream.lihatcctv.com/stream/0196f296-c238-7104-a24e-11a5a0a45597" },
+            { name: "Jl. P Emir M Noer - Cut Nyak Dien", lat: -5.418588227428714, lng: 105.246873627623, url: "https://stream.lihatcctv.com/stream/0196f297-f7e7-7141-9e35-00272f62c35e" },
+            { name: "Simpang Gramedia", lat: -5.417688451328354, lng: 105.2581932624957, url: "https://stream.lihatcctv.com/stream/01970ab6-0394-7130-9c8e-32901364dc66" },
+            { name: "Pintu Masuk Lapangan Saburai", lat: -5.419603389372029, lng: 105.2599403500961, url: "https://stream.lihatcctv.com/stream/01983687-8dc1-73dd-947b-031139e2c3e3" },
+            { name: "PERUM POLDA BAYPASS", lat: -5.363332599426792, lng: 105.26123705905208, url: "https://stream.lihatcctv.com/stream/01970ab6-ca43-711e-b49f-2b7ac3f8ff66" },
+            { name: "Simpang BKP", lat: -5.390040110073884, lng: 105.21018785204387, url: "https://stream.lihatcctv.com/stream/01970ab7-e6af-73d8-b415-fddf2f3e03b2" },
+            { name: "Jl. Jend. Sudirman (Puti Minang Pahoman)", lat: -5.422828579520553, lng: 105.27156868077685, url: "https://stream.lihatcctv.com/stream/01970ab8-863a-72c8-a166-f1f5af745e26" },
+            { name: "Bundaran Raden Intan", lat: -5.361852635025265, lng: 105.22588031616013, url: "https://stream.lihatcctv.com/stream/01970ab9-3fe0-7349-be3f-cf619954d11e" },
+            { name: "Terminal Rajabasa", lat: -5.366741362920994, lng: 105.23774098630925, url: "https://stream.lihatcctv.com/stream/01970ab9-e1da-7139-9383-e325aec2d881" },
+            { name: "Simpang Sukarame", lat: -5.386959537374223, lng: 105.29170379824437, url: "https://stream.lihatcctv.com/stream/01970aba-893b-715f-a231-10c75f86c8e1" },
+            { name: "JL. Soekarno Hatta - Jl. Putri Dibalau", lat: -5.407635868059229, lng: 105.29365631360204, url: "https://stream.lihatcctv.com/stream/01983691-189f-71d3-b6cb-3abafd8ce983" },
+            { name: "Dinas Kesehatan Provinsi", lat: -5.429645795138558, lng: 105.26995954228705, url: "https://stream.lihatcctv.com/stream/01970abb-19ad-71a7-b73d-ed6f3865286f" },
+            { name: "Simpang Pasar Kota Karang", lat: -5.454221074066928, lng: 105.25712985470784, url: "https://stream.lihatcctv.com/stream/019836e2-a51b-704c-96e2-e216ac45c7ef" },
+            { name: "PERPUTARAN SMA 5 Way Halim", lat: -5.379233936091621, lng: 105.28306719197305, url: "https://stream.lihatcctv.com/stream/01970abc-34bc-713d-aadc-29186817e416" },
+            { name: "Jl. RYA CUDU", lat: -5.38026158471013, lng: 105.29023944197108, url: "https://stream.lihatcctv.com/stream/01970abc-e182-715f-b298-a17f127e3fae" },
+            { name: "Simpang Universitas Saburai", lat: -5.393005229970866, lng: 105.22961384809332, url: "https://stream.lihatcctv.com/stream/01970abd-a408-7084-a713-a9a1ba04bc56" },
+            { name: "Terminal Kemiling", lat: -5.392185119758911, lng: 105.21476771170171, url: "https://stream.lihatcctv.com/stream/01970abe-1d0c-72a8-961a-a8c2a1f38877" },
+            { name: "Simpang Kejati", lat: -5.441284993231064, lng: 105.25979801335674, url: "https://stream.lihatcctv.com/stream/01970abe-95b4-72d7-91a3-9e22d0691e42" },
+            { name: "Jl. P.Legundi - Tirtayasa", lat: -5.3950608807954135, lng: 105.29678708649452, url: "https://stream.lihatcctv.com/stream/01970abf-55cc-73e0-a0db-2359d19c1007" },
+            { name: "Mall Kartini", lat: -5.41681187494023, lng: 105.25414484478168, url: "https://stream.lihatcctv.com/stream/01970ff4-f400-72e1-ae58-e3c5a459dc87" },
+            { name: "Teuku Umar - Makam Pahlawan", lat: -5.397061969960328, lng: 105.26154407443909, url: "https://stream.lihatcctv.com/stream/01983645-2a09-70a9-a93a-e263139a799e" },
+            { name: "Jl. Diponegoro - Warsito", lat: -5.439873399644124, lng: 105.26566825723128, url: "https://stream.lihatcctv.com/stream/019836a2-9f36-726e-8ef8-fc7525c5e016" },
+            { name: "Jl. G.Subroto - Y.Sudarso", lat: -5.444597832533305, lng: 105.29307561876897, url: "https://stream.lihatcctv.com/stream/019836a3-d5ee-70f3-aa5a-f4d43f9173c9" },
+            { name: "Jl.W.R Mongonsidi", lat: -5.434502907537114, lng: 105.25482682141877, url: "https://stream.lihatcctv.com/stream/019836a5-1981-729e-bf14-b8dc90562a2e" },
+            { name: "Jl. R.Intan - Kamboja", lat: -5.414671630428243, lng: 105.25832122226099, url: "https://stream.lihatcctv.com/stream/019836a6-3c7e-71dd-949b-420b87c6a128" },
+            { name: "Jl. Z.A Pagar Alam", lat: -5.376581926343766, lng: 105.2494459856046, url: "https://stream.lihatcctv.com/stream/019836a8-85c1-731a-93cf-8aeedcfea2ef" },
+            { name: "Simpang Brimob", lat: -5.420443707540014, lng: 105.26962577182442, url: "https://stream.lihatcctv.com/stream/019836ab-c123-71fa-998c-ef0bc4c1ed0c" },
+            { name: "Jl.Diponegoro - Cut Mutia", lat: -5.4338500, lng: 105.2626481, url: "https://stream.lihatcctv.com/stream/019836ac-c806-7118-bff9-ba03db42cc1a" },
+            { name: "Underpass Unila", lat: -5.3733789, lng: 105.2410083, url: "https://stream.lihatcctv.com/stream/019836af-6973-72d3-97f8-8792ad14c807" },
+            { name: "POS Kota TBS", lat: -5.4488471, lng: 105.2665463, url: "https://stream.lihatcctv.com/stream/019836b0-5ecd-7276-898c-9aa168957eae" },
+            { name: "Simpang Teluk ABN", lat: -5.4648056, lng: 105.3185946, url: "https://stream.lihatcctv.com/stream/019836b1-8181-73f2-ba05-8581addd7c4b" },
+            { name: "W.R Supratman - A.Dahlan", lat: -5.4449510, lng: 105.2727861, url: "https://stream.lihatcctv.com/stream/019836b3-0e68-71ba-b238-5e0c08f6b945" },
+            { name: "DPRD Kota", lat: -5.4421604, lng: 105.2549934, url: "https://stream.lihatcctv.com/stream/019836b4-12b1-7362-b6f5-a062263edeaa" },
+            { name: "SIMPANG UIN / GOLF", lat: -5.3856875, lng: 105.3057032, url: "https://stream.lihatcctv.com/stream/019836b5-1e2f-70a4-b3c2-abf3b8208019" }
         ];
 
         // Ambil elemen-elemen DOM
@@ -169,7 +204,7 @@
         // Event listener untuk tombol Tutup
         closeBtn.onclick = closeVideoPanel;
 
-        // **FITUR:** Tutup panel jika klik di luar video.
+        // FITUR: Tutup panel jika klik di luar video.
         videoPanelWrapper.onclick = (event) => {
             // Cek apakah target klik adalah elemen wrapper itu sendiri
             if (event.target === videoPanelWrapper) {
