@@ -1,177 +1,32 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Peta CCTV Bandar Lampung</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <style>
-        /* Reset dan Penataan Dasar */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: sans-serif;
-            overflow-x: hidden;
-        }
+name: Deploy static content to Pages
 
-        #map {
-            width: 100%;
-            height: 100vh;
-        }
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
 
-        /* Container Full Screen untuk Menangkap Klik di Luar Panel */
-        #videoPanelWrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7); /* Latar belakang yang lebih gelap untuk menekankan modal */
-            display: none; /* Awalnya tersembunyi */
-            z-index: 999; /* Di bawah tombol tutup, tapi di atas peta */
-        }
-        
-        /* Panel video itu sendiri, diletakkan di tengah wrapper */
-        #videoPanel {
-            position: absolute;
-            top: 20px; 
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.9);
-            padding: 15px;
-            border-radius: 12px;
-            width: 95%;
-            max-width: 960px;
-            z-index: 1000; /* Pastikan di atas wrapper */
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-        }
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
-        #videoPanel iframe {
-            width: 100%;
-            height: min(70vh, calc(95vw * 9 / 16));
-            border: none;
-            border-radius: 8px;
-            display: block;
-        }
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
-        #videoPanel h3 {
-            color: white;
-            text-align: center;
-            margin-top: 0;
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-            padding-right: 30px;
-        }
-
-        #closeBtn {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            background: #e74c3c;
-            border: none;
-            color: white;
-            border-radius: 8px;
-            padding: 6px 10px;
-            cursor: pointer;
-            font-size: 1rem;
-            z-index: 1001; /* Pastikan tombol di atas semuanya */
-        }
-
-        #closeBtn:hover {
-            background: #c0392b;
-        }
-    </style>
-</head>
-<body>
-    <div id="map"></div>
-
-    <div id="videoPanelWrapper">
-        <div id="videoPanel">
-            <button id="closeBtn">Tutup</button>
-            <h3 id="videoTitle"></h3>
-            <iframe id="videoFrame" allowfullscreen></iframe>
-        </div>
-    </div>
-
-    <script>
-        // Inisialisasi peta
-        const map = L.map("map").setView([-5.40, 105.26], 13);
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        }).addTo(map);
-
-        // Daftar lokasi CCTV statis
-        const cctvList = [
-            { name: "Tugu Adipura", lat: -5.422321456201332, lng: 105.25823858180057, url: "https://stream.lihatcctv.com/stream/01982b1d-faf1-72f7-94e0-423ffc069e31" },
-            { name: "Tugu Juang", lat: -5.40905650196051, lng: 105.25799247669252, url: "https://stream.lihatcctv.com/stream/0196eb9d-2e1a-72cb-babc-0a2c2d573152" },
-            { name: "Pemkot Lampung", lat: -5.429322219165505, lng: 105.26289029911312, url: "https://stream.lihatcctv.com/stream/0196ebd3-f25d-73f0-89b1-1685140006ea" },
-            { name: "Simpang 3 RA Basyid", lat: -5.3514502317224215, lng: 105.26353854595021, url: "https://stream.lihatcctv.com/stream/0196ebd8-3acb-71b3-9f6e-ba47274a9755" },
-            { name: "Stasiun Tanjung Karang", lat: -5.408924592359024, lng: 105.25866093097967, url: "https://stream.lihatcctv.com/stream/0196ebdb-cd7f-7033-93a1-77ba876e961c" },
-            { name: "Simpang ITERA", lat: -5.359397809748541, lng: 105.30523276042773, url: "https://stream.lihatcctv.com/stream/0196ebdf-efdd-7307-adfa-b0273b207a09" },
-            { name: "PKOR Way Halim", lat: -5.378124148833187, lng: 105.27850950455019, url: "https://stream.lihatcctv.com/stream/0196ec00-56c8-72fe-914b-706dca06c154" },
-            { name: "Jl. Wolter M (Gubernuran)", lat: -5.439718796445849, lng: 105.25837656858215, url: "https://stream.lihatcctv.com/stream/0196ae7b-0d1e-7197-813d-1deedb6cf843" },
-            { name: "Mall Boemi Kedaton (MBK)", lat: -5.38237150577507, lng: 105.25863008300006, url: "https://stream.lihatcctv.com/stream/0196ec03-7f7e-71b5-85d6-9aba0f9a00c0" },
-            { name: "Simpang Pasar Tugu", lat: -5.410006202351245, lng: 105.26772957582837, url: "https://stream.lihatcctv.com/stream/0196ec06-790d-7159-a125-d4b14ddd7d90" }
-        ];
-
-        // Ambil elemen-elemen DOM
-        const videoPanelWrapper = document.getElementById("videoPanelWrapper");
-        const videoTitle = document.getElementById("videoTitle");
-        const videoFrame = document.getElementById("videoFrame");
-        const closeBtn = document.getElementById("closeBtn");
-
-        /**
-         * Fungsi untuk menutup panel video.
-         */
-        function closeVideoPanel() {
-            videoPanelWrapper.style.display = "none";
-            videoFrame.src = ""; // Menghentikan loading/streaming
-        }
-
-        /**
-         * Menampilkan panel video dengan stream CCTV
-         * @param {string} name - Nama lokasi CCTV.
-         * @param {string} url - URL stream video.
-         */
-        function showVideo(name, url) {
-            videoTitle.textContent = name;
-            videoFrame.src = url;
-            videoPanelWrapper.style.display = "block"; // Tampilkan wrapper
-            
-            // Gerakkan peta ke lokasi marker (UX Improvement)
-            const cctv = cctvList.find(c => c.name === name);
-            if (cctv) {
-                map.flyTo([cctv.lat, cctv.lng], map.getZoom(), { duration: 1.5 });
-            }
-        }
-
-        // Tambahkan marker ke peta
-        cctvList.forEach(cctv => {
-            const marker = L.marker([cctv.lat, cctv.lng]).addTo(map)
-                .bindTooltip(cctv.name); 
-
-            // Saat marker diklik, langsung panggil fungsi showVideo
-            marker.on("click", () => {
-                showVideo(cctv.name, cctv.url);
-            });
-        });
-
-        // Event listener untuk tombol Tutup
-        closeBtn.onclick = closeVideoPanel;
-
-        // **FITUR BARU:** Tutup panel jika klik di luar video.
-        videoPanelWrapper.onclick = (event) => {
-            // Cek apakah target klik adalah elemen wrapper itu sendiri
-            // Ini akan menutup panel hanya jika user klik di area gelap di luar video
-            if (event.target === videoPanelWrapper) {
-                closeVideoPanel();
-            }
-        };
-    </script>
-</body>
-</html>        uses: actions/upload-pages-artifact@v3
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
           path: '.'
