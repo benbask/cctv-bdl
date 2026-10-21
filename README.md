@@ -37,3 +37,18 @@ python -m http.server 8080
 
 Halaman harus dibuka lewat `http://` (bukan `file://`) agar cookie challenge dan
 permintaan lintas-origin berjalan normal.
+
+## Memperbarui data kamera
+
+```bash
+node scripts/fetch-cameras.js
+```
+
+Script ini mengambil ulang daftar kamera dari API dan menimpa `cameras.json`.
+Jalankan setiap kali ada kamera baru / berubah, lalu commit hasilnya.
+
+## Deploy
+
+GitHub Pages repo ini memakai *Deploy from a branch* (`main` / root), jadi setiap
+push otomatis menerbitkan ulang situs. Workflow `static.yml` disediakan sebagai
+alternatif deploy manual (Actions → "Deploy static content to Pages" → Run workflow).
