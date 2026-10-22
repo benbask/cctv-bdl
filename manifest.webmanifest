@@ -1,0 +1,37 @@
+{
+    "id": "./",
+    "name": "Peta CCTV Bandar Lampung",
+    "short_name": "CCTV Lampung",
+    "description": "Peta lokasi dan siaran langsung CCTV Kota Bandar Lampung. Data terbuka Seribu Wajah (Diskominfo).",
+    "lang": "id",
+    "dir": "ltr",
+    "start_url": "./",
+    "scope": "./",
+    "display": "standalone",
+    "display_override": ["standalone", "minimal-ui"],
+    "orientation": "any",
+    "background_color": "#0f1115",
+    "theme_color": "#0f1115",
+    "categories": ["navigation", "utilities"],
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "icons/icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}

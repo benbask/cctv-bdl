@@ -5,6 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Peta CCTV Bandar Lampung</title>
     <meta name="description" content="Peta lokasi dan live streaming CCTV Kota Bandar Lampung (Seribu Wajah - Diskominfo)." />
+    <meta name="author" content="benbask" />
+    <meta name="theme-color" content="#0f1115" />
+
+    <!-- PWA -->
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon-180.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="CCTV Lampung" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Peta CCTV Bandar Lampung" />
+    <meta property="og:description" content="247 kamera CCTV Kota Bandar Lampung, live di peta. Data terbuka Seribu Wajah (Diskominfo)." />
+    <meta property="og:image" content="https://benbask.github.io/cctv-bdl/icons/icon-512.png" />
+    <meta property="og:url" content="https://benbask.github.io/cctv-bdl/" />
+    <meta name="twitter:card" content="summary" />
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
@@ -274,11 +293,206 @@
         }
 
         #credit a { color: #8ab4f8; text-decoration: none; }
+        #credit a:hover { text-decoration: underline; }
+
+        /* ---------- Tombol Tentang ---------- */
+        #aboutBtn {
+            flex: 0 0 auto;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1px solid var(--line);
+            background: #1b1f27;
+            color: var(--muted);
+            font-size: 0.85rem;
+            font-weight: 700;
+            font-family: Georgia, "Times New Roman", serif;
+            font-style: italic;
+            line-height: 1;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        #aboutBtn:hover {
+            color: var(--text);
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        /* ---------- Panel Tentang ---------- */
+        #aboutWrapper {
+            position: fixed;
+            inset: 0;
+            z-index: 1200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        #aboutWrapper.open { display: flex; }
+
+        #aboutPanel {
+            position: relative;
+            width: min(460px, 100%);
+            max-height: min(82vh, 640px);
+            overflow-y: auto;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 18px 20px 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(14px);
+        }
+
+        #aboutPanel h2 {
+            margin: 0 0 6px;
+            font-size: 1.05rem;
+        }
+
+        #aboutPanel p,
+        #aboutPanel li {
+            color: var(--muted);
+            font-size: 0.82rem;
+            line-height: 1.55;
+        }
+
+        #aboutPanel p { margin: 0 0 10px; }
+
+        #aboutPanel ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+
+        #aboutPanel a {
+            color: #8ab4f8;
+            text-decoration: none;
+        }
+
+        #aboutPanel a:hover { text-decoration: underline; }
+
+        #aboutPanel .about-note {
+            margin-top: 12px;
+            padding: 9px 11px;
+            border: 1px solid rgba(231, 76, 60, 0.35);
+            background: rgba(231, 76, 60, 0.08);
+            border-radius: 9px;
+            font-size: 0.78rem;
+            line-height: 1.5;
+            color: #f2b8b2;
+        }
+
+        #aboutPanel .about-by {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid var(--line);
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        #aboutClose {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            border: none;
+            background: transparent;
+            color: var(--muted);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 6px 8px;
+            border-radius: 8px;
+        }
+
+        #aboutClose:hover { color: var(--text); background: rgba(255, 255, 255, 0.08); }
+
+        /* ---------- Banner install (PWA) ---------- */
+        #installBar {
+            position: fixed;
+            left: 50%;
+            bottom: 16px;
+            z-index: 900;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: min(440px, calc(100vw - 24px));
+            padding: 10px 12px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            box-shadow: 0 12px 34px rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(12px);
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, 120%);
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+
+        #installBar.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, 0);
+        }
+
+        #installBar .ib-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            flex: 0 0 auto;
+        }
+
+        #installBar .ib-text {
+            flex: 1;
+            min-width: 0;
+            font-size: 0.76rem;
+            line-height: 1.35;
+            color: var(--muted);
+        }
+
+        #installBar .ib-text strong {
+            display: block;
+            color: var(--text);
+            font-size: 0.82rem;
+        }
+
+        #installBtn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 9px;
+            padding: 8px 14px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        #installBtn:hover { background: #2a72d4; }
+
+        #installDismiss {
+            background: transparent;
+            border: none;
+            color: var(--muted);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 4px 6px;
+            flex: 0 0 auto;
+        }
+
+        #installDismiss:hover { color: var(--text); }
+
+        /* Saat banner install tampil, kredit digeser ke atas agar tidak tertutup. */
+        #credit { transition: bottom 0.25s ease; }
+        @media (min-width: 641px) {
+            body.install-open #credit { bottom: 100px; }
+        }
 
         @media (max-width: 640px) {
             #legend { display: none; }
             #videoPanel { padding: 10px; }
             #videoTitle { font-size: 0.95rem; }
+            #credit { bottom: 12px; font-size: 0.64rem; }
+            #installBar { bottom: 54px; }
+            #aboutBtn { width: 32px; height: 32px; }
         }
     </style>
 </head>
@@ -289,12 +503,48 @@
         <div id="searchRow">
             <input id="search" type="search" placeholder="Cari CCTV (nama jalan / lokasi)…" autocomplete="off" />
             <span id="count">memuat…</span>
+            <button id="aboutBtn" type="button" title="Tentang aplikasi" aria-label="Tentang aplikasi">i</button>
         </div>
         <div id="chips"></div>
     </div>
 
     <div id="legend"></div>
-    <div id="credit">Sumber: <a href="https://seribuwajah.bandarlampungkota.go.id" target="_blank" rel="noopener">Seribu Wajah — Diskominfo Bandar Lampung</a> · <span id="updatedAt"></span></div>
+    <div id="credit">oleh <a href="https://github.com/benbask" target="_blank" rel="noopener">benbask</a> · Data <a href="https://seribuwajah.bandarlampungkota.go.id" target="_blank" rel="noopener">Seribu Wajah</a> · <span id="updatedAt"></span></div>
+
+    <div id="installBar" role="dialog" aria-live="polite" aria-label="Pasang aplikasi">
+        <img class="ib-icon" src="./icons/icon-192.png" alt="" width="34" height="34" />
+        <div class="ib-text">
+            <strong id="ibTitle">Pasang aplikasi</strong>
+            <span id="ibDesc">Akses lebih cepat dari layar utama.</span>
+        </div>
+        <button id="installBtn" type="button">Pasang</button>
+        <button id="installDismiss" type="button" aria-label="Tutup">✕</button>
+    </div>
+
+    <div id="aboutWrapper">
+        <div id="aboutPanel" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
+            <button id="aboutClose" type="button" aria-label="Tutup">✕</button>
+            <h2 id="aboutTitle">Tentang</h2>
+            <p>
+                Peta CCTV Kota Bandar Lampung. Klik penanda untuk memutar siaran langsung
+                dari kamera, atau saring berdasarkan kategori dan nama lokasi.
+            </p>
+            <ul>
+                <li>Sumber data: <a href="https://seribuwajah.bandarlampungkota.go.id" target="_blank" rel="noopener">Seribu Wajah — Diskominfo Bandar Lampung</a></li>
+                <li>Peta: <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>, Leaflet, hls.js</li>
+                <li>Pembaruan data: <span id="aboutUpdated">—</span></li>
+            </ul>
+            <div class="about-note">
+                Situs ini bukan situs resmi Pemerintah Kota Bandar Lampung. Data dan siaran
+                video sepenuhnya milik sumber aslinya.
+            </div>
+            <div class="about-by">
+                Dibuat oleh <a href="https://github.com/benbask" target="_blank" rel="noopener">benbask</a>
+                · <a href="https://github.com/benbask/cctv-bdl" target="_blank" rel="noopener">kode sumber</a>
+            </div>
+        </div>
+    </div>
+
 
     <div id="videoPanelWrapper">
         <div id="videoPanel">
@@ -368,7 +618,11 @@
             meta: document.getElementById("videoMeta"),
             video: document.getElementById("video"),
             stageMsg: document.getElementById("stageMsg"),
-            closeBtn: document.getElementById("closeBtn")
+            closeBtn: document.getElementById("closeBtn"),
+            aboutBtn: document.getElementById("aboutBtn"),
+            aboutWrapper: document.getElementById("aboutWrapper"),
+            aboutClose: document.getElementById("aboutClose"),
+            aboutUpdated: document.getElementById("aboutUpdated")
         };
 
         /* =====================================================================
@@ -655,8 +909,11 @@
 
                 if (data && data.updatedAt) {
                     const d = new Date(data.updatedAt);
-                    document.getElementById("updatedAt").textContent =
-                        "data " + d.toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
+                    const label = d.toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
+                    document.getElementById("updatedAt").textContent = "data " + label;
+                    els.aboutUpdated.textContent = label;
+                } else {
+                    els.aboutUpdated.textContent = "tidak diketahui";
                 }
             } catch (err) {
                 console.error(err);
@@ -665,6 +922,131 @@
                     '<span style="color:#e74c3c;font-size:0.8rem">' +
                     "Data CCTV tidak dapat dimuat. Pastikan cameras.json ada di folder yang sama.</span>";
             }
+        }
+
+        /* =====================================================================
+           Panel Tentang
+           ===================================================================== */
+        function openAbout() {
+            els.aboutWrapper.classList.add("open");
+        }
+
+        function closeAbout() {
+            els.aboutWrapper.classList.remove("open");
+        }
+
+        els.aboutBtn.addEventListener("click", openAbout);
+        els.aboutClose.addEventListener("click", closeAbout);
+        els.aboutWrapper.addEventListener("click", (e) => {
+            if (e.target === els.aboutWrapper) closeAbout();
+        });
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && els.aboutWrapper.classList.contains("open")) closeAbout();
+        });
+
+        /* =====================================================================
+           PWA: tombol install + service worker
+           ===================================================================== */
+        const INSTALL_DISMISS_KEY = "cctv-bdl:install-dismissed";
+        const DISMISS_DAYS = 14;
+
+        const installBar = document.getElementById("installBar");
+        const installBtn = document.getElementById("installBtn");
+        const installDismissBtn = document.getElementById("installDismiss");
+        const ibTitle = document.getElementById("ibTitle");
+        const ibDesc = document.getElementById("ibDesc");
+
+        let deferredPrompt = null;
+        let installMode = "prompt"; // "prompt" (Android/desktop) | "ios"
+
+        const isStandalone =
+            window.matchMedia("(display-mode: standalone)").matches ||
+            window.navigator.standalone === true;
+
+        const isIOS =
+            /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+            (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+        function installDismissed() {
+            try {
+                const at = Number(localStorage.getItem(INSTALL_DISMISS_KEY) || 0);
+                return at > 0 && Date.now() - at < DISMISS_DAYS * 864e5;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function rememberDismiss() {
+            try {
+                localStorage.setItem(INSTALL_DISMISS_KEY, String(Date.now()));
+            } catch (e) { /* mode privat: abaikan */ }
+        }
+
+        function showInstallBar(mode) {
+            if (isStandalone || installDismissed()) return;
+            installMode = mode;
+            if (mode === "ios") {
+                ibTitle.textContent = "Tambah ke Layar Utama";
+                ibDesc.textContent = "Ketuk Bagikan ⬆ lalu pilih “Tambah ke Layar Utama”.";
+                installBtn.textContent = "Mengerti";
+            } else {
+                ibTitle.textContent = "Pasang aplikasi";
+                ibDesc.textContent = "Akses lebih cepat dari layar utama, tanpa buka browser.";
+                installBtn.textContent = "Pasang";
+            }
+            installBar.classList.add("show");
+            document.body.classList.add("install-open");
+        }
+
+        function hideInstallBar() {
+            installBar.classList.remove("show");
+            document.body.classList.remove("install-open");
+        }
+
+        window.addEventListener("beforeinstallprompt", (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            showInstallBar("prompt");
+        });
+
+        window.addEventListener("appinstalled", () => {
+            deferredPrompt = null;
+            hideInstallBar();
+            try { localStorage.removeItem(INSTALL_DISMISS_KEY); } catch (e) {}
+        });
+
+        installBtn.addEventListener("click", async () => {
+            if (installMode === "ios") {
+                hideInstallBar();
+                rememberDismiss();
+                return;
+            }
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            try {
+                const choice = await deferredPrompt.userChoice;
+                if (choice && choice.outcome !== "accepted") rememberDismiss();
+            } catch (e) { /* diabaikan */ }
+            deferredPrompt = null;
+            hideInstallBar();
+        });
+
+        installDismissBtn.addEventListener("click", () => {
+            hideInstallBar();
+            rememberDismiss();
+        });
+
+        // iOS tidak punya beforeinstallprompt — tampilkan petunjuk manual.
+        if (isIOS && !isStandalone) {
+            setTimeout(() => showInstallBar("ios"), 2500);
+        }
+
+        if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register("./sw.js").catch((err) => {
+                    console.warn("Service worker gagal didaftarkan:", err);
+                });
+            });
         }
 
         loadCameras();

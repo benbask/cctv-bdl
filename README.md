@@ -27,6 +27,22 @@ lewat `.github/workflows/static.yml`.
 - Host `stream-newseribuwajah...` (host asli di field `streamUrl`) menolak akses langsung
   dengan `401`, jadi selalu pakai path `cctv_<id>/index.m3u8` di host utama.
 
+## Memasang sebagai aplikasi (PWA)
+
+Situs ini bisa dipasang di Android dan iOS:
+
+- **Android / Chrome / Edge** — muncul tombol "Pasang" saat syarat installable terpenuhi
+  (manifest + service worker + HTTPS).
+- **iOS / Safari** — muncul petunjuk "Bagikan → Tambah ke Layar Utama" (iOS tidak punya
+  prompt install otomatis).
+
+Setelah terpasang, aplikasi berjalan `standalone` (tanpa address bar) dan kerangka
+halaman tetap bisa dibuka saat offline lewat service worker (`sw.js`). Data
+`cameras.json` diambil network-first, sedangkan aset inti memakai cache-first.
+
+Naikkan `VERSION` di `sw.js` setiap kali `index.html` atau ikon berubah, supaya
+pengguna menerima versi baru.
+
 ## Menjalankan lokal
 
 ```bash
@@ -35,8 +51,8 @@ python -m http.server 8080
 # buka http://localhost:8080
 ```
 
-Halaman harus dibuka lewat `http://` (bukan `file://`) agar cookie challenge dan
-permintaan lintas-origin berjalan normal.
+Halaman harus dibuka lewat `http://` (bukan `file://`) agar cookie challenge,
+service worker, dan permintaan lintas-origin berjalan normal.
 
 ## Memperbarui data kamera
 
@@ -52,3 +68,8 @@ Jalankan setiap kali ada kamera baru / berubah, lalu commit hasilnya.
 GitHub Pages repo ini memakai *Deploy from a branch* (`main` / root), jadi setiap
 push otomatis menerbitkan ulang situs. Workflow `static.yml` disediakan sebagai
 alternatif deploy manual (Actions → "Deploy static content to Pages" → Run workflow).
+
+---
+
+Dibuat oleh [benbask](https://github.com/benbask). Bukan situs resmi Pemerintah Kota
+Bandar Lampung; seluruh data dan siaran video milik Diskominfo Kota Bandar Lampung.
